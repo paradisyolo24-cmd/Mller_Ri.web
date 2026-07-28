@@ -173,6 +173,10 @@
   .book-genre{font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--pink-deep); margin-top:0.5rem; display:block;}
   .book-stars{margin-top:0.6rem; color:var(--lavender-deep); letter-spacing:0.15em; font-size:0.9rem;}
   .book-link{display:inline-block; margin-top:1rem; font-size:0.75rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--blue-deep); border-bottom:1px solid var(--blue); padding-bottom:2px;}
+  .book-tags{display:flex; flex-wrap:wrap; gap:0.4rem; margin-top:0.7rem;}
+  .book-tags span{font-size:0.65rem; letter-spacing:0.05em; text-transform:uppercase; color:var(--lavender-deep); background:rgba(201,184,245,0.18); border:1px solid rgba(201,184,245,0.4); border-radius:999px; padding:0.2rem 0.6rem;}
+  .book-mini{font-size:0.85rem; line-height:1.55; color:var(--text-muted); margin-top:0.8rem;
+    display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;}
 
   /* ---------- Universe ---------- */
   #universo{overflow:hidden;}
@@ -194,21 +198,10 @@
   .planet span.name{font-family:'Cormorant Garamond',serif; font-size:1.1rem; color:var(--ink);}
   .planet span.tag{font-size:0.65rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-muted);}
 
-  /* ---------- Characters ---------- */
-  .char-grid{
-    display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:2rem; max-width:1100px; margin:0 auto;
-  }
-  .char-card{
-    background:var(--card-bg); backdrop-filter:blur(14px); border:1px solid rgba(255,255,255,0.8); border-radius:14px;
-    padding:1.8rem; position:relative; min-height:280px; box-shadow:0 15px 35px rgba(76,82,112,0.1);
-  }
-  .char-tab{font-size:0.65rem; letter-spacing:0.16em; text-transform:uppercase; color:var(--lavender-deep); border:1px solid var(--line); display:inline-block; padding:0.2rem 0.6rem; border-radius:3px; margin-bottom:1rem;}
-  .char-card h3{font-size:1.7rem; color:var(--ink);}
-  .char-card .char-role{color:var(--pink-deep); font-size:0.78rem; letter-spacing:0.08em; text-transform:uppercase; margin-top:0.2rem; display:block;}
+  /* ---------- Character fields (usados dentro del modal de cada libro) ---------- */
   .char-field{margin-top:1rem;}
   .char-field b{display:block; font-size:0.68rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--text-muted); margin-bottom:0.25rem;}
   .char-field p{margin:0; font-size:0.92rem; line-height:1.55; color:var(--ink);}
-  .char-quote{margin-top:1.1rem; font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1.15rem; color:var(--lavender-deep); border-left:2px solid var(--lavender); padding-left:0.9rem;}
 
   /* ---------- Blog ---------- */
   .blog-list{max-width:820px; margin:0 auto; display:flex; flex-direction:column; gap:1rem;}
@@ -229,18 +222,13 @@
     cursor:pointer; border:1px solid rgba(255,255,255,0.7); transition:transform 0.3s ease; padding:1rem;
     box-shadow:0 12px 30px rgba(76,82,112,0.1); text-shadow:0 1px 4px rgba(0,0,0,0.15);
   }
+  .gallery-tile img{width:100%; height:100%; object-fit:cover; border-radius:inherit;}
   .gallery-tile:hover{transform:scale(1.03);}
+  .lightbox-inner img{width:100%; height:100%; object-fit:contain; border-radius:16px;}
 
-  /* ---------- Timeline ---------- */
-  .timeline{max-width:700px; margin:0 auto; position:relative; padding-left:2rem;}
-  .timeline::before{content:''; position:absolute; left:5px; top:6px; bottom:6px; width:1px; background:linear-gradient(var(--lavender), var(--pink), var(--blue));}
-  .tl-item{position:relative; padding-bottom:2.6rem;}
-  .tl-item:last-child{padding-bottom:0;}
-  .tl-dot{position:absolute; left:-2rem; top:4px; width:11px; height:11px; border-radius:50%; background:var(--lavender-deep); box-shadow:0 0 12px var(--lavender);}
-  .tl-item.pending .tl-dot{background:transparent; border:1px solid var(--text-muted); box-shadow:none;}
-  .tl-year{font-size:0.7rem; letter-spacing:0.14em; color:var(--pink-deep); text-transform:uppercase;}
-  .tl-item h4{font-size:1.4rem; margin-top:0.3rem; color:var(--ink);}
-  .tl-item p{color:var(--text-muted); font-size:0.88rem; margin-top:0.3rem;}
+  /* ---------- Playlists (sección) ---------- */
+  .playlist-list{max-width:700px; margin:0 auto; display:flex; flex-direction:column; gap:1rem;}
+  .playlist-card-section{background:var(--card-bg); backdrop-filter:blur(14px); border:1px solid rgba(255,255,255,0.8); box-shadow:0 12px 30px rgba(76,82,112,0.08);}
 
   /* ---------- Newsletter ---------- */
   #newsletter{text-align:center;}
@@ -289,20 +277,45 @@
   .modal-buy{display:inline-block; padding:0.8rem 2rem; background:linear-gradient(120deg,var(--pink-deep),var(--pink)); color:#fff; border-radius:999px; font-size:0.78rem; letter-spacing:0.1em; text-transform:uppercase; transition:transform 0.25s ease; box-shadow:0 10px 24px rgba(227,156,188,0.35);}
   .modal-buy:hover{transform:translateY(-2px);}
   .modal-buy-alt{background:linear-gradient(120deg,var(--lavender-deep),var(--blue-deep)); box-shadow:0 10px 24px rgba(156,130,224,0.3);}
-  .char-empty{grid-column:1/-1; text-align:center; color:var(--text-muted); font-size:0.92rem; padding:2rem; border:1px dashed var(--line); border-radius:12px;}
+  /* Modal: ficha del libro */
+  .ficha-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:1.2rem;}
 
-  /* Modal: personajes desplegables */
-  .modal-char-list{display:flex; flex-direction:column; gap:0.6rem;}
-  .modal-char-item{border:1px solid var(--line); border-radius:10px; overflow:hidden; background:rgba(255,255,255,0.4);}
-  .modal-char-name{
-    width:100%; text-align:left; background:none; border:none; padding:0.9rem 1.1rem;
-    font-family:'Cormorant Garamond',serif; font-size:1.15rem; color:var(--ink); cursor:pointer;
-    display:flex; justify-content:space-between; align-items:center;
+  /* Modal: personajes en círculos */
+  .avatar-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(84px,1fr)); gap:1.1rem; margin-bottom:1.6rem;}
+  .avatar-item{background:none; border:none; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:0.5rem; padding:0.4rem;}
+  .avatar-circle{
+    width:64px; height:64px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    color:#fff; font-family:'Cormorant Garamond',serif; font-size:1.2rem; font-weight:600;
+    box-shadow:0 8px 20px rgba(76,82,112,0.18); border:2px solid rgba(255,255,255,0.8); transition:transform 0.25s ease;
   }
-  .modal-char-name .chevron{transition:transform 0.3s ease; color:var(--lavender-deep); font-size:0.9rem;}
-  .modal-char-name.open .chevron{transform:rotate(180deg);}
-  .modal-char-detail{max-height:0; overflow:hidden; transition:max-height 0.4s ease; padding:0 1.1rem;}
-  .modal-char-detail.open{max-height:400px; padding:0 1.1rem 1.1rem;}
+  .avatar-item:hover .avatar-circle{transform:translateY(-3px) scale(1.05);}
+  .avatar-item.active .avatar-circle{box-shadow:0 0 0 3px var(--lavender-deep), 0 8px 20px rgba(76,82,112,0.18);}
+  .avatar-name{font-size:0.72rem; color:var(--text-muted); text-align:center; line-height:1.2;}
+  .char-detail-panel{background:rgba(255,255,255,0.45); border:1px solid var(--line); border-radius:14px; padding:1.5rem; min-height:80px;}
+  .char-detail-panel h3{font-size:1.5rem; color:var(--ink);}
+  .char-detail-panel .char-role{color:var(--pink-deep); font-size:0.78rem; letter-spacing:0.08em; text-transform:uppercase; display:block; margin-top:0.2rem;}
+  .char-field-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:0.8rem; margin-top:0.9rem;}
+  .char-detail-hint{color:var(--text-muted); font-size:0.88rem; font-style:italic; margin:0;}
+
+  /* Modal: playlist */
+  .playlist-card{
+    display:flex; align-items:center; gap:1rem; background:rgba(255,255,255,0.5); border:1px solid var(--line);
+    border-radius:14px; padding:1.2rem 1.5rem; transition:transform 0.25s ease;
+  }
+  .playlist-card:hover{transform:translateY(-2px);}
+  .playlist-icon{font-size:1.8rem;}
+  .playlist-card b{display:block; color:var(--ink); font-family:'Cormorant Garamond',serif; font-size:1.15rem;}
+  .playlist-card small{color:var(--blue-deep); font-size:0.78rem; letter-spacing:0.05em;}
+
+  /* Modal: frases en cristal */
+  .quotes-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1rem;}
+  .quote-glass{
+    background:rgba(255,255,255,0.5); backdrop-filter:blur(10px); border:1px solid rgba(255,255,255,0.85);
+    border-radius:12px; padding:1.2rem; font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1.02rem;
+    color:var(--ink); box-shadow:0 10px 24px rgba(76,82,112,0.08); line-height:1.5;
+  }
+
+  .char-empty{grid-column:1/-1; text-align:center; color:var(--text-muted); font-size:0.92rem; padding:2rem; border:1px dashed var(--line); border-radius:12px;}
 
   /* Modal: galería propia */
   .modal-gallery-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:0.9rem;}
@@ -332,10 +345,9 @@
     <a href="#inicio">Inicio</a>
     <a href="#libros">Libros</a>
     <a href="#universo">Universo</a>
-    <a href="#personajes">Personajes</a>
     <a href="#blog">Blog</a>
     <a href="#galeria">Galería</a>
-    <a href="#lanzamientos">Lanzamientos</a>
+    <a href="#playlists">Playlists</a>
     <a href="#newsletter">Newsletter</a>
   </div>
 </nav>
@@ -374,16 +386,6 @@
   <div class="orbit-stage" id="orbitStage"></div>
 </section>
 
-<!-- ================= PERSONAJES ================= -->
-<section id="personajes">
-  <div class="section-head">
-    <p class="eyebrow">Expedientes</p>
-    <h2>Personajes</h2>
-    <p>Fichas personales de quienes habitan estas páginas.</p>
-  </div>
-  <div class="char-grid" id="charGrid"></div>
-</section>
-
 <!-- ================= BLOG ================= -->
 <section id="blog">
   <div class="section-head">
@@ -399,24 +401,25 @@
   <div class="section-head">
     <p class="eyebrow">Arte del universo</p>
     <h2>Galería</h2>
-    <p>Ilustraciones, portadas, escenas y objetos importantes.</p>
+    <p>Todas las imágenes de cada libro, reunidas en un solo collage.</p>
   </div>
   <div class="gallery-grid" id="galleryGrid"></div>
 </section>
 
-<!-- ================= LANZAMIENTOS ================= -->
-<section id="lanzamientos">
+<!-- ================= PLAYLISTS ================= -->
+<section id="playlists">
   <div class="section-head">
-    <p class="eyebrow">Camino por recorrer</p>
-    <h2>Próximos lanzamientos</h2>
+    <p class="eyebrow">La banda sonora</p>
+    <h2>Playlists</h2>
+    <p>La música que acompaña cada historia.</p>
   </div>
-  <div class="timeline" id="timeline"></div>
+  <div class="playlist-list" id="playlistList"></div>
 </section>
 
 <!-- ================= NEWSLETTER ================= -->
 <section id="newsletter">
   <p class="eyebrow">No te lo pierdas</p>
-  <h2>¿Quieres enterarte antes que nadie<br>de nuevos capítulos, personajes y lanzamientos?</h2>
+  <h2>¿Quieres enterarte antes que nadie<br>de nuevos capítulos e historias?</h2>
   <form class="nl-form" id="nlForm">
     <input type="email" placeholder="tu@correo.com" required>
     <button type="submit">Unirme</button>
@@ -426,17 +429,17 @@
 
 <footer>
   <div class="social-row">
-    <a href="#" aria-label="Instagram" title="Instagram">
+    <a href="https://www.instagram.com/mlle.risol_?igsh=MTZsdjNleG9mZHJyNg==" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
     </a>
-    <a href="#" aria-label="TikTok" title="TikTok">
+    <a href="https://www.tiktok.com/@mlle_ri?_r=1&_t=ZS-98MSlonipjp" target="_blank" rel="noopener" aria-label="TikTok" title="TikTok">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 3v11.5a3.5 3.5 0 1 1-3-3.46"/><path d="M14 3c.5 2.5 2.2 4.2 4.5 4.6"/></svg>
     </a>
-    <a href="#" aria-label="YouTube" title="YouTube">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="6" width="18" height="12" rx="3"/><path d="M11 10l4 2-4 2z" fill="currentColor" stroke="none"/></svg>
+    <a href="https://www.oplotoficial.com/u/mlle_ri" target="_blank" rel="noopener" aria-label="OPlot" title="OPlot">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 19.5V6a2 2 0 0 1 2-2h11.5A1.5 1.5 0 0 1 19 5.5V17H6.5A1.5 1.5 0 0 0 5 18.5v0A1.5 1.5 0 0 0 6.5 20H19"/></svg>
     </a>
-    <a href="#" aria-label="Pinterest" title="Pinterest">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M9.5 18c1-3.5 1.6-6 1.6-6M12 12a2.3 2.3 0 1 0 2.3-2.3c-1.8 0-2.8 1.3-2.8 2.6 0 1 .4 1.7 1 2"/></svg>
+    <a href="https://www.wattpad.com/story/414200118?utm_source=android&utm_medium=link&utm_content=story_info&wp_page=story_details_button&wp_uname=mllerisol" target="_blank" rel="noopener" aria-label="Wattpad" title="Wattpad">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 20.5c4-2.2 8-5.5 8-10.2A5.3 5.3 0 0 0 12 7a5.3 5.3 0 0 0-8 3.3c0 4.7 4 8 8 10.2Z"/></svg>
     </a>
   </div>
   <p>© 2026 Mlle.Ri · Todos los derechos reservados</p>
@@ -466,83 +469,96 @@ const PALETTE = ["#E39CBC","#9C82E0","#66B7CC","#6FC9A0","#E0A8C8","#8CA8E0"];
 const books = [
   {
     id:"beso",
-    title:"Cambia mi mundo con un beso",
-    genre:"Romance juvenil",
+    title:"Cambiaste mi mundo con un beso",
+    genre:"Romance juvenil · Comedia",
+    tags:["Juvenil","Comedia","Romance","Aventura","Retos"],
     rating:4,
     img:"",
-    backCover:"Próximamente: una historia sobre encontrarse a uno mismo cuando alguien más cambia por completo la manera en que ves el mundo.",
+    miniSinopsis:"El último año de colegio debía ser inolvidable. Sara nunca imaginó que comenzaría con un cuaderno perdido, un chico imposible de ignorar y un corazón que llevaba demasiado tiempo escondiéndose detrás de una sonrisa. Entre primeras veces, amistades que se convierten en hogar y un amor que nace sin prisa, descubrirá que algunas personas llegan para cambiar tu historia... con un solo beso.",
+    sinopsisCompleta:"El último año de colegio debía ser inolvidable. Sara nunca imaginó que comenzaría con un cuaderno perdido, un chico imposible de ignorar y un corazón que llevaba demasiado tiempo escondiéndose detrás de una sonrisa.\n\nAcostumbrada a querer que todo esté en orden y a convencer a todos —incluyéndose a sí misma— de que todo está bien, descubrirá que hay heridas que no desaparecen solo por aprender a vivir con ellas. Entre primeras veces, desafíos inesperados, amistades que se convierten en hogar y un amor que nace sin prisa, Sara aprenderá que algunas personas llegan cuando menos las esperas, no para salvarte, sino para recordarte que aún es posible volver a confiar.\n\nPorque, a veces, basta un solo beso para cambiar tu historia.",
+    ambientacion:["Último año de preparatoria","Vida escolar","Consejo estudiantil","Festivales escolares","Vida cotidiana"],
+    temas:["Primer amor","Crecer","Amistad","Descubrir quién eres","Sueños y creatividad","Teatro","Aprender a confiar"],
+    ficha:{
+      autora:"Risol",
+      genero:"Romance",
+      estado:"En desarrollo",
+      fecha:"27 de julio de 2026",
+      plataformas:"OPlot y Wattpad"
+    },
     characters:[
-      // Ficha completa por personaje. Agrega los tuyos con esta misma estructura:
-      // { name:"Nombre", role:"Rol", age:"Edad", likes:"Gustos", curiosities:"Curiosidad", quote:"Frase" }
-      { name:"Por anunciar", role:"", age:"", likes:"", curiosities:"", quote:"" }
+      { name:"Sara Lans", fullName:"Sara Lans", age:"17 años", role:"Protagonista", curso:"Último año de preparatoria", ocupacion:"Estudiante",
+        personalidad:"Sara intenta ser una buena persona incluso cuando eso le trae problemas. Cree en los valores que le enseñó su abuela y suele anteponer el bienestar de los demás al suyo. Aunque normalmente se muestra alegre y optimista, también es torpe con la mala suerte y acostumbra a ocultar aquello que realmente siente.",
+        virtudes:"Empática, creativa, responsable, solidaria, perseverante.",
+        defectos:"Piensa demasiado las cosas, tiende a minimizar sus propios problemas, la mala suerte parece perseguirla, le cuesta expresar lo que realmente siente.",
+        hobbies:"Escribir, crear historias, escribir obras de teatro, desarrollar personajes, participar en proyectos escolares, pasar tiempo con sus amigos." },
+      { name:"Jarret", fullName:"Jarret Evans", age:"17 años", role:"Protagonista masculino", curso:"Último año de preparatoria", ocupacion:"Estudiante",
+        personalidad:"Se presenta como una persona reservada. Habla poco y parece mantener distancia con los demás. Tiene un pasado problemático debido a una condición. Se fija en los detalles. Se disocia con facilidad y tiende a parecer que ignora a las personas.",
+        hobbies:"Dibujar, arquitectura, tocar la guitarra, ha tomado el gusto de leer." },
+      { name:"Emilia Carter", fullName:"Emilia Sánchez", age:"17 años", role:"Mejor amiga de Sara", curso:"Último año de preparatoria", ocupacion:"Estudiante",
+        personalidad:"Introvertida, optimista, siempre ve lo bueno de las personas. Es muy meticulosa y organizada. Es el tipo de amiga que siempre intenta levantar el ánimo del grupo, incluso en los momentos difíciles.",
+        hobbies:"Escuchar música, organizar salidas con sus amigos, tomar fotografías, decorar su habitación, ver películas románticas." },
+      { name:"Samantha", fullName:"Samantha Walker", age:"17 años", role:"Mejor amiga de Sara", curso:"Último año de preparatoria", ocupacion:"Estudiante",
+        personalidad:"Segura de sí misma, decidida y con una personalidad dominante. Siempre toma la iniciativa y no acepta un \"no\" por respuesta. Es protectora con sus amigos y suele organizar los planes del grupo. Aunque puede parecer autoritaria, en realidad demuestra su cariño involucrando a todos en sus aventuras.",
+        hobbies:"Ver películas, jugar videojuegos, pasar tiempo con sus amigas planeando salidas, le gusta salir." },
+      { name:"Dani", fullName:"Daniela Morales", age:"17 años", role:"Amiga de Sara", curso:"Último año de preparatoria", ocupacion:"Estudiante",
+        personalidad:"Práctica, directa y un poco sarcástica. Cuando alguien duda, ella es la primera en empujarlo a actuar. Tiene los pies sobre la tierra y suele ser la voz de la razón dentro del grupo, aunque no pierde el sentido del humor.",
+        hobbies:"Leer novelas de misterio, practicar voleibol, resolver acertijos, juegos de mesa, pasar tiempo con sus amigas." },
+      { name:"Sabrina", fullName:"Sabrina Rojas", age:"17 años", role:"Amiga de Sara", curso:"Último año de preparatoria", ocupacion:"Estudiante",
+        personalidad:"Dramática, divertida y muy expresiva. Aunque suele mostrarse miedosa o exagerar algunas situaciones, siempre termina acompañando al grupo. Es la que aporta muchas de las escenas cómicas gracias a sus reacciones espontáneas.",
+        hobbies:"Ver películas de terror (aunque luego se asuste), comer dulces, contar historias, sacarse fotos con sus amigas, escuchar podcasts de misterio." },
+      { name:"Josefa Álvarez", fullName:"Josefa Álvarez", age:"17 años", role:"Amiga cercana de Sara", curso:"Último año de preparatoria", ocupacion:"Estudiante",
+        personalidad:"Serena, observadora y muy empática. Prefiere escuchar antes que hablar y suele ser quien mantiene unido al grupo cuando surgen diferencias. Tiene un carácter tranquilo que equilibra las personalidades más impulsivas de Samantha y Cameron.",
+        hobbies:"Leer novelas, cuidar plantas, escuchar música, los deportes, pasear por parques." },
+      { name:"Cameron Hayes", fullName:"Cameron Hayes", age:"18 años", role:"Mejor amigo de las chicas", curso:"Último año de preparatoria", ocupacion:"Estudiante",
+        personalidad:"Carismático, bromista y aventurero. Es quien suele convertir cualquier idea en una experiencia divertida y, junto con Samantha, siempre termina involucrando al grupo en nuevos desafíos. Tiene una energía contagiosa y disfruta haciendo que todos salgan de su zona de confort.",
+        hobbies:"Deportes, videojuegos, explorar lugares nuevos." },
+      { name:"Alex", fullName:"", age:"", role:"", curso:"", ocupacion:"", personalidad:"", hobbies:"" },
+      { name:"Max", fullName:"", age:"", role:"", curso:"", ocupacion:"", personalidad:"", hobbies:"" },
+      { name:"Thomas", fullName:"Thomas Lans", age:"22 años", role:"Hermano mayor de Sara", curso:"", ocupacion:"Estudiante de medicina",
+        personalidad:"Protector.", hobbies:"Cocinar." },
+      { name:"Lucía", fullName:"", age:"", role:"Mamá de Sara", curso:"", ocupacion:"Trabaja en oficina estatal", personalidad:"", hobbies:"" },
+      { name:"Robert Lans", fullName:"", age:"", role:"Papá de Sara", curso:"", ocupacion:"", personalidad:"", hobbies:"" }
     ],
-    playlist:["Por anunciar"],
-    quotes:["Por anunciar"],
+    playlistLink:"https://youtube.com/playlist?list=PLK6BTTXRRyy8&si=q_1c4MR6t7gEO0Kc",
+    quotes:[
+      "No me gustan los finales. Me gustan los ensayos, los entremedios, los desarrollos. Porque todavía puedes equivocarte, todavía puedes cambiar, todavía puedes hacer las cosas mejor.",
+      "La vida tiene una divertida forma de hacer que te tragues tus propias palabras.",
+      "Los minutos son bastante egoístas. Lo único que hacen es avanzar.",
+      "Tal vez el último primer día de clases también es el comienzo del fin.",
+      "Era como hacer un libreto. Las páginas todavía estaban en blanco. Pero la historia ya quería empezar.",
+      "Si este va a ser nuestro último año... entonces hagamos algo que nadie pueda olvidar.",
+      "El liderazgo no consiste en ser el primero en mandar, sino el primero en creer en una idea.",
+      "La vida es como un vidrio recién templado. Con el tiempo aparecen grietas... y aunque intentes esconderlas, siempre recuerdan quién te hizo daño.",
+      "Hay personas que tiran el vidrio roto. Y hay otras que lo transforman.",
+      "Las personas creen que el liderazgo consiste en ser el primero en hablar; en realidad es el primero que decide trabajar por un propósito común.",
+      "Somos niños que pretendemos ser adultos.",
+      "Con diálogos escritos a las tres de la mañana, personajes que nunca terminé de conocer y pensamientos que aparecían de la nada."
+    ],
     gallery:[
-      {label:"Portada"},
-      {label:"Escena conceptual"},
-      {label:"Personaje principal"}
+      {label:"Escena romántica", img:"imagenes/beso-escena-1.png"},
+      {label:"Momento entre los protagonistas", img:"imagenes/beso-escena-2.png"},
+      {label:"Ilustración conceptual", img:"imagenes/beso-escena-3.png"},
+      {label:"Escena del libro", img:"imagenes/beso-escena-4.png"},
+      {label:"Estética del libro", img:"imagenes/beso-estetica-promocional.png"}
     ],
     extras:[
       {title:"Escena eliminada", text:"Próximamente"},
       {title:"Dato curioso", text:"Próximamente"}
     ],
-    oplotLink:"#",
-    wattpadLink:"#"
-  },
-  {
-    id:"proximo",
-    title:"Próximo libro",
-    genre:"En planeación",
-    rating:0,
-    img:"",
-    backCover:"Un nuevo mundo está tomando forma. Muy pronto compartiré los primeros detalles.",
-    characters:[
-      { name:"Por anunciar", role:"", age:"", likes:"", curiosities:"", quote:"" }
-    ],
-    playlist:["Por anunciar"],
-    quotes:["Por anunciar"],
-    gallery:[
-      {label:"Próximamente"}
-    ],
-    extras:[
-      {title:"Próximamente", text:"Aún estoy dando forma a este mundo."}
-    ],
-    oplotLink:"",
-    wattpadLink:""
+    oplotLink:"https://www.oplotoficial.com/story/cambiaste-mi-mundo-con-un-beso",
+    wattpadLink:"https://www.wattpad.com/story/414200118?utm_source=android&utm_medium=link&utm_content=story_info&wp_page=story_details_button&wp_uname=mllerisol"
   }
-];
-
-const characters = [
-  // Agrega aquí las fichas de tus personajes, por ejemplo:
-  // { name:"Nombre", role:"Rol en la historia", age:"Edad", likes:"Gustos", curiosities:"Curiosidad", quote:"Frase" }
 ];
 
 const blogPosts = [
   {
-    date:"Mayo 2026",
-    title:"Próximos capítulos",
-    excerpt:"Ya estoy trabajando en la siguiente parte de la historia. Aquí un pequeño adelanto de lo que se viene.",
-    full:"Sin spoilers grandes, pero puedo decir esto: alguien va a tener que elegir entre una respuesta y una persona. Y esa decisión no va a ser fácil para nadie, incluida yo, que la estoy escribiendo."
+    date:"Julio 2026",
+    title:"Historia de creación de Cambiaste mi mundo con un beso",
+    excerpt:"Cambiaste mi mundo con un beso es un libro que nació en 2020, en plena pandemia, con una idea clara: contar una historia de amor adolescente dentro de la escuela.",
+    full:"Cambiaste mi mundo con un beso es un libro que nació en 2020, en plena pandemia, con una idea clara: contar una historia de amor adolescente dentro de la escuela, recalcando también la amistad de ambos protagonistas durante esa etapa.\n\nLos primeros personajes que fueron creados son el grupo de amigas, que originalmente se iba a llamar \"Las Chicas Brillosas\", inspirado en mi propio grupo de amigas de aquella época colegial. Y Jarret, en vez de ser un adolescente introvertido, iba a ser uno de los chicos populares de la escuela... Sí, sí... lo sé. Muy cliché. Pero no me culpen; mi cabeza pensaba como la de una adolescente.\n\nPero toda esa idea quedó guardada en el fondo del \"cajón\" que se llama miles de carpetas dentro de un computador, con copias en ese almacenamiento llamado nube. Hasta hace aproximadamente tres meses.\n\nDesesperada por encontrar una historia de amor inocente, bonita, sin complicaciones y fácil de leer, recordé aquel archivo guardado en algún rincón de mi turbulento escritorio. Y, después de una exhaustiva inspección de lo que había escrito seis años atrás... borré todo.\n\nY comencé lo que ahora se conoce como Cambiaste mi mundo con un beso, manteniendo la amistad y el primer amor, pero agregando el genial —y temible— frasco de los retos. Dándoles una historia a los protagonistas, heridas, personalidad y una razón para ser quienes son.\n\nCreando, al final, una historia liviana y fácil de leer, pensada para acompañarte y hacerte pasar un buen rato."
   }
   // Agrega aquí nuevas entradas del blog:
   // { date:"Mes Año", title:"Título", excerpt:"Resumen corto", full:"Texto completo" }
-];
-
-const galleryItems = [
-  {label:"Portada"},
-  {label:"Escena conceptual"},
-  {label:"Personaje"},
-  {label:"Objeto importante"},
-  {label:"Fondo de pantalla"},
-  {label:"Ilustración"}
-  // Cambia estos labels o agrega más items para tu galería
-];
-
-const timelineEvents = [
-  {year:"2026", title:"Cambia mi mundo con un beso", desc:"En escritura", done:false},
-  {year:"2026", title:"Nuevo proyecto", desc:"En planeación", done:false},
-  {year:"···", title:"Más historias en camino", desc:"", done:false}
 ];
 
 /* ========================= RENDER ========================= */
@@ -567,6 +583,8 @@ books.forEach((b,i)=>{
       <h3>${b.title}</h3>
       <span class="book-genre">${b.genre}</span>
       ${b.rating ? `<div class="book-stars">${stars(b.rating)}</div>` : ''}
+      ${b.tags && b.tags.length ? `<div class="book-tags">${b.tags.map(t=>`<span>${t}</span>`).join('')}</div>` : ''}
+      ${b.miniSinopsis ? `<p class="book-mini">${b.miniSinopsis}</p>` : ''}
       <div class="book-link">Leer más →</div>
     </div>`;
   card.addEventListener('click', ()=>openBook(b.id));
@@ -599,25 +617,6 @@ function layoutOrbit(){
 }
 layoutOrbit();
 
-// Characters
-const charGrid = document.getElementById('charGrid');
-if(characters.length === 0){
-  charGrid.innerHTML = `<div class="char-empty">Las fichas de personajes están en preparación. Muy pronto conocerás a quienes habitan esta historia.</div>`;
-}
-characters.forEach(c=>{
-  const card = document.createElement('div');
-  card.className='char-card';
-  card.innerHTML = `
-    <span class="char-tab">Expediente</span>
-    <h3>${c.name}</h3>
-    <span class="char-role">${c.role}</span>
-    <div class="char-field"><b>Edad</b><p>${c.age}</p></div>
-    <div class="char-field"><b>Le gusta</b><p>${c.likes}</p></div>
-    <div class="char-field"><b>Curiosidad</b><p>${c.curiosities}</p></div>
-    <div class="char-quote">"${c.quote}"</div>`;
-  charGrid.appendChild(card);
-});
-
 // Blog
 const blogList = document.getElementById('blogList');
 blogPosts.forEach(post=>{
@@ -629,21 +628,36 @@ blogPosts.forEach(post=>{
       <span class="blog-date">${post.date}</span>
     </div>
     <p class="blog-excerpt">${post.excerpt}</p>
-    <div class="blog-full"><p>${post.full}</p></div>`;
+    <div class="blog-full">${post.full.split('\n\n').map(p=>`<p>${p}</p>`).join('')}</div>`;
   el.addEventListener('click', ()=> el.classList.toggle('open'));
   blogList.appendChild(el);
 });
 
-// Gallery
+// Gallery — collage automático con las imágenes de la galería de cada libro
 const galleryGrid = document.getElementById('galleryGrid');
-galleryItems.forEach((g,i)=>{
+const allGalleryImages = books.flatMap(b => (b.gallery || []).map(g => ({...g, bookTitle: b.title})));
+if(allGalleryImages.length === 0){
+  galleryGrid.innerHTML = `<div class="char-empty">Aún no hay imágenes cargadas. Se irán agregando a medida que subas contenido a cada libro.</div>`;
+}
+allGalleryImages.forEach((g,i)=>{
   const tile = document.createElement('div');
   tile.className='gallery-tile';
-  tile.style.cssText = placeholderStyle(i+2);
-  tile.textContent = g.label;
+  if(g.img){
+    tile.innerHTML = `<img src="${g.img}" alt="${g.label}">`;
+  } else {
+    tile.style.cssText = placeholderStyle(i+2);
+    tile.textContent = g.label;
+  }
+  tile.title = `${g.label} · ${g.bookTitle}`;
   tile.addEventListener('click', ()=>{
-    document.getElementById('lightboxInner').style.cssText = placeholderStyle(i+2);
-    document.getElementById('lightboxInner').textContent = g.label;
+    const lb = document.getElementById('lightboxInner');
+    if(g.img){
+      lb.style.cssText = '';
+      lb.innerHTML = `<img src="${g.img}" alt="${g.label}">`;
+    } else {
+      lb.style.cssText = placeholderStyle(i+2);
+      lb.textContent = g.label;
+    }
     document.getElementById('lightbox').classList.add('active');
   });
   galleryGrid.appendChild(tile);
@@ -651,17 +665,25 @@ galleryItems.forEach((g,i)=>{
 document.getElementById('lightboxClose').addEventListener('click', ()=>document.getElementById('lightbox').classList.remove('active'));
 document.getElementById('lightbox').addEventListener('click', e=>{ if(e.target.id==='lightbox') e.currentTarget.classList.remove('active'); });
 
-// Timeline
-const timeline = document.getElementById('timeline');
-timelineEvents.forEach(ev=>{
-  const item = document.createElement('div');
-  item.className = 'tl-item' + (ev.done ? '' : ' pending');
-  item.innerHTML = `
-    <div class="tl-dot"></div>
-    <div class="tl-year">${ev.year}</div>
-    <h4>${ev.title}${ev.done ? ' ✔' : ''}</h4>
-    ${ev.desc ? `<p>${ev.desc}</p>` : ''}`;
-  timeline.appendChild(item);
+// Playlists — una tarjeta por cada libro que tenga playlist
+const playlistList = document.getElementById('playlistList');
+const booksWithPlaylist = books.filter(b => b.playlistLink);
+if(booksWithPlaylist.length === 0){
+  playlistList.innerHTML = `<div class="char-empty">Aún no hay playlists cargadas.</div>`;
+}
+booksWithPlaylist.forEach(b=>{
+  const card = document.createElement('a');
+  card.href = b.playlistLink;
+  card.target = '_blank';
+  card.rel = 'noopener';
+  card.className = 'playlist-card playlist-card-section';
+  card.innerHTML = `
+    <span class="playlist-icon">🎵</span>
+    <span>
+      <b>${b.title}</b>
+      <small>Escuchar playlist en YouTube ↗</small>
+    </span>`;
+  playlistList.appendChild(card);
 });
 
 /* ========================= MODAL LIBRO ========================= */
@@ -672,6 +694,7 @@ function openBook(id){
   const b = books.find(x=>x.id===id);
   if(!b) return;
   const idx = books.indexOf(b);
+  const initials = name => name.split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
   modalBox.innerHTML = `
     <button class="modal-close" id="modalCloseBtn">&times;</button>
     <div class="modal-top">
@@ -680,42 +703,74 @@ function openBook(id){
         <p class="eyebrow">${b.genre}</p>
         <h2>${b.title}</h2>
         ${b.rating ? `<div class="book-stars">${stars(b.rating)}</div>` : ''}
+        ${b.tags && b.tags.length ? `<div class="book-tags">${b.tags.map(t=>`<span>${t}</span>`).join('')}</div>` : ''}
       </div>
     </div>
     <div class="modal-tabs">
-      <button class="modal-tab active" data-tab="ficha">Ficha del libro</button>
+      <button class="modal-tab active" data-tab="historia">Sobre la historia</button>
+      <button class="modal-tab" data-tab="ficha">Ficha del libro</button>
       <button class="modal-tab" data-tab="personajes">Personajes</button>
+      <button class="modal-tab" data-tab="galeria">Galería</button>
       <button class="modal-tab" data-tab="playlist">Playlist</button>
       <button class="modal-tab" data-tab="frases">Frases</button>
-      <button class="modal-tab" data-tab="galeria">Galería</button>
       <button class="modal-tab" data-tab="extras">Extras</button>
     </div>
-    <div class="modal-pane active" data-pane="ficha"><p>${b.backCover}</p></div>
-    <div class="modal-pane" data-pane="personajes">
-      <div class="modal-char-list">
-        ${b.characters.map((c,ci)=>`
-          <div class="modal-char-item">
-            <button class="modal-char-name" data-char="${ci}">${c.name} <span class="chevron">▾</span></button>
-            <div class="modal-char-detail" id="charDetail-${ci}">
-              ${c.age ? `<div class="char-field"><b>Edad</b><p>${c.age}</p></div>` : ''}
-              ${c.role ? `<div class="char-field"><b>Rol</b><p>${c.role}</p></div>` : ''}
-              ${c.likes ? `<div class="char-field"><b>Gustos</b><p>${c.likes}</p></div>` : ''}
-              ${c.curiosities ? `<div class="char-field"><b>Curiosidades</b><p>${c.curiosities}</p></div>` : ''}
-              ${c.quote ? `<div class="char-quote">"${c.quote}"</div>` : ''}
-            </div>
-          </div>`).join('')}
+
+    <div class="modal-pane active" data-pane="historia">
+      ${(b.sinopsisCompleta||'').split('\n\n').map(p=>`<p>${p}</p>`).join('')}
+      ${b.ambientacion && b.ambientacion.length ? `<div class="char-field"><b>Ambientación</b><p>${b.ambientacion.join(' · ')}</p></div>` : ''}
+      ${b.temas && b.temas.length ? `<div class="char-field"><b>Temas principales</b><p>${b.temas.join(' · ')}</p></div>` : ''}
+    </div>
+
+    <div class="modal-pane" data-pane="ficha">
+      <div class="ficha-grid">
+        <div class="char-field"><b>Título</b><p>${b.title}</p></div>
+        <div class="char-field"><b>Autora</b><p>${b.ficha.autora}</p></div>
+        <div class="char-field"><b>Género</b><p>${b.ficha.genero}</p></div>
+        <div class="char-field"><b>Estado</b><p>${b.ficha.estado}</p></div>
+        <div class="char-field"><b>Fecha de publicación</b><p>${b.ficha.fecha}</p></div>
+        <div class="char-field"><b>Plataformas</b><p>${b.ficha.plataformas}</p></div>
       </div>
     </div>
-    <div class="modal-pane" data-pane="playlist"><ul>${b.playlist.map(c=>`<li>${c}</li>`).join('')}</ul></div>
-    <div class="modal-pane" data-pane="frases"><ul>${b.quotes.map(c=>`<li>"${c}"</li>`).join('')}</ul></div>
+
+    <div class="modal-pane" data-pane="personajes">
+      <div class="avatar-grid">
+        ${b.characters.map((c,ci)=>`
+          <button class="avatar-item" data-char="${ci}">
+            <span class="avatar-circle" style="${placeholderStyle(ci)}">${initials(c.name)}</span>
+            <span class="avatar-name">${c.name}</span>
+          </button>`).join('')}
+      </div>
+      <div class="char-detail-panel" id="charDetailPanel"><p class="char-detail-hint">Toca un personaje para ver su ficha ✧</p></div>
+    </div>
+
     <div class="modal-pane" data-pane="galeria">
       <div class="modal-gallery-grid">
-        ${b.gallery.map((g,gi)=>`<div class="gallery-tile modal-gallery-tile" style="${placeholderStyle(idx+gi+1)}" data-glabel="${g.label}">${g.label}</div>`).join('')}
+        ${b.gallery.map((g,gi)=>`<div class="gallery-tile modal-gallery-tile" style="${g.img ? '' : placeholderStyle(idx+gi+1)}" data-glabel="${g.label}" data-gimg="${g.img||''}">${g.img ? `<img src="${g.img}" alt="${g.label}">` : g.label}</div>`).join('')}
       </div>
     </div>
+
+    <div class="modal-pane" data-pane="playlist">
+      ${b.playlistLink ? `
+        <a href="${b.playlistLink}" target="_blank" rel="noopener" class="playlist-card">
+          <span class="playlist-icon">🎵</span>
+          <span>
+            <b>Playlist de ${b.title}</b>
+            <small>Escuchar en YouTube ↗</small>
+          </span>
+        </a>` : `<p>Playlist por anunciar.</p>`}
+    </div>
+
+    <div class="modal-pane" data-pane="frases">
+      <div class="quotes-grid">
+        ${b.quotes.map(q=>`<div class="quote-glass">"${q}"</div>`).join('')}
+      </div>
+    </div>
+
     <div class="modal-pane" data-pane="extras">
       ${b.extras.map(e=>`<div class="extra-item"><h4>${e.title}</h4><p>${e.text}</p></div>`).join('')}
     </div>
+
     <div class="modal-buy-row">
       ${b.oplotLink ? `<a href="${b.oplotLink}" class="modal-buy" target="_blank" rel="noopener">Leer en OPlot</a>` : ''}
       ${b.wattpadLink ? `<a href="${b.wattpadLink}" class="modal-buy modal-buy-alt" target="_blank" rel="noopener">Leer en Wattpad</a>` : ''}
@@ -729,19 +784,38 @@ function openBook(id){
       modalBox.querySelector(`[data-pane="${tab.dataset.tab}"]`).classList.add('active');
     });
   });
-  modalBox.querySelectorAll('.modal-char-name').forEach(btn=>{
+  modalBox.querySelectorAll('.avatar-item').forEach(btn=>{
     btn.addEventListener('click', ()=>{
-      const detail = document.getElementById('charDetail-'+btn.dataset.char);
-      const wasOpen = detail.classList.contains('open');
-      modalBox.querySelectorAll('.modal-char-detail').forEach(d=>d.classList.remove('open'));
-      modalBox.querySelectorAll('.modal-char-name').forEach(n=>n.classList.remove('open'));
-      if(!wasOpen){ detail.classList.add('open'); btn.classList.add('open'); }
+      modalBox.querySelectorAll('.avatar-item').forEach(a=>a.classList.remove('active'));
+      btn.classList.add('active');
+      const c = b.characters[btn.dataset.char];
+      const panel = document.getElementById('charDetailPanel');
+      panel.innerHTML = `
+        <h3>${c.fullName || c.name}</h3>
+        ${c.role ? `<span class="char-role">${c.role}</span>` : ''}
+        <div class="char-field-grid">
+          ${c.age ? `<div class="char-field"><b>Edad</b><p>${c.age}</p></div>` : ''}
+          ${c.curso ? `<div class="char-field"><b>Curso</b><p>${c.curso}</p></div>` : ''}
+          ${c.ocupacion ? `<div class="char-field"><b>Ocupación</b><p>${c.ocupacion}</p></div>` : ''}
+          ${c.hobbies ? `<div class="char-field"><b>Hobbies</b><p>${c.hobbies}</p></div>` : ''}
+        </div>
+        ${c.personalidad ? `<div class="char-field"><b>Personalidad</b><p>${c.personalidad}</p></div>` : ''}
+        ${c.virtudes ? `<div class="char-field"><b>Virtudes</b><p>${c.virtudes}</p></div>` : ''}
+        ${c.defectos ? `<div class="char-field"><b>Defectos</b><p>${c.defectos}</p></div>` : ''}
+        ${(!c.role && !c.age && !c.personalidad) ? `<p class="char-detail-hint">Ficha por completar ✧</p>` : ''}
+      `;
     });
   });
   modalBox.querySelectorAll('.modal-gallery-tile').forEach(tile=>{
     tile.addEventListener('click', ()=>{
-      document.getElementById('lightboxInner').style.cssText = tile.style.cssText;
-      document.getElementById('lightboxInner').textContent = tile.dataset.glabel;
+      const lb = document.getElementById('lightboxInner');
+      if(tile.dataset.gimg){
+        lb.style.cssText = '';
+        lb.innerHTML = `<img src="${tile.dataset.gimg}" alt="${tile.dataset.glabel}">`;
+      } else {
+        lb.style.cssText = tile.style.cssText;
+        lb.textContent = tile.dataset.glabel;
+      }
       document.getElementById('lightbox').classList.add('active');
     });
   });
