@@ -286,11 +286,33 @@
   .blog-post-head{display:flex; flex-direction:column-reverse; gap:0.5rem;}
   .blog-date{font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--blue-deep);}
   .blog-post h3{font-size:1.25rem; margin-top:0; color:var(--ink);}
-  .blog-excerpt{color:var(--text-muted); margin-top:0.6rem; font-size:0.9rem; line-height:1.5;}
-  .blog-full{max-height:0; overflow:hidden; transition:max-height 0.5s ease;}
-  .blog-post.open{flex:0 0 260px; aspect-ratio:auto; align-self:flex-start;}
-  .blog-post.open .blog-full{max-height:600px; margin-top:0.9rem; overflow-y:auto;}
-  .blog-full p{color:var(--ink); font-size:0.88rem; line-height:1.6;}
+
+  /* ---------- Blog: página completa del post ---------- */
+  .blog-page-box{max-width:700px;}
+  .blog-page-date{font-size:0.75rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--blue-deep);}
+  .blog-page-box h2{margin-top:0.5rem; font-size:clamp(1.7rem,3.4vw,2.3rem); color:var(--ink);}
+  .blog-page-body{margin-top:1.6rem; line-height:1.8; color:var(--ink); font-size:0.98rem;}
+  .blog-page-body p{margin:0 0 1.1rem;}
+  .comments-section{margin-top:3.2rem; padding-top:2rem; border-top:1px solid var(--line);}
+  .comments-section h4{font-size:0.95rem; letter-spacing:0.06em; text-transform:uppercase; color:var(--text-muted); margin-bottom:1.2rem; font-family:'Jost',sans-serif; font-weight:500;}
+  .comment-list{display:flex; flex-direction:column; gap:0.8rem; margin-bottom:1.4rem;}
+  .comment-item{background:rgba(255,255,255,0.5); border:1px solid var(--line); border-radius:12px; padding:0.8rem 1rem;}
+  .comment-item .comment-name{font-size:0.8rem; font-weight:500; color:var(--lavender-deep);}
+  .comment-item .comment-text{font-size:0.85rem; color:var(--ink); margin-top:0.2rem; line-height:1.5;}
+  .comment-empty{font-size:0.85rem; color:var(--text-muted); font-style:italic; margin-bottom:1.4rem;}
+  .comment-form{display:flex; flex-direction:column; gap:0.6rem;}
+  .comment-form input, .comment-form textarea{
+    font-family:'Jost',sans-serif; font-size:0.85rem; padding:0.65rem 0.9rem; border-radius:10px;
+    border:1px solid var(--line); background:rgba(255,255,255,0.6); color:var(--ink); resize:vertical;
+  }
+  .comment-form textarea{min-height:70px;}
+  .comment-form button{
+    align-self:flex-start; border:none; background:linear-gradient(120deg,var(--lavender-deep),var(--pink-deep));
+    color:#fff; padding:0.6rem 1.5rem; font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase;
+    border-radius:999px; cursor:pointer; transition:transform 0.25s ease;
+  }
+  .comment-form button:hover{transform:translateY(-2px);}
+
 
   /* ---------- Gallery ---------- */
   .gallery-grid{
@@ -571,6 +593,11 @@
   </div>
 </div>
 
+<div class="modal-overlay" id="blogOverlay">
+  <button class="modal-back" id="blogBackBtn">← Volver al blog</button>
+  <div class="modal-box blog-page-box" id="blogModalBox"></div>
+</div>
+
 <!-- Lightbox galería -->
 <div class="lightbox" id="lightbox">
   <button class="lightbox-close" id="lightboxClose">&times;</button>
@@ -740,18 +767,73 @@ layoutOrbit();
 
 // Blog
 const blogList = document.getElementById('blogList');
-blogPosts.forEach(post=>{
+blogPosts.forEach((post,i)=>{
   const el = document.createElement('div');
   el.className='blog-post';
   el.innerHTML = `
     <div class="blog-post-head">
       <h3>${post.title}</h3>
       <span class="blog-date">${post.date}</span>
-    </div>
-    <div class="blog-full">${post.full.split('\n\n').map(p=>`<p>${p}</p>`).join('')}</div>`;
-  el.addEventListener('click', ()=> el.classList.toggle('open'));
+    </div>`;
+  el.addEventListener('click', ()=> routeToBlogPost(i));
   blogList.appendChild(el);
 });
+
+// Página completa de cada post del blog + comentarios (en memoria, se reinician al recargar)
+const blogOverlay = document.getElementById('blogOverlay');
+const blogModalBox = document.getElementById('blogModalBox');
+const blogComments = blogPosts.map(()=>[]);
+
+function renderComments(i){
+  const list = document.getElementById('commentList');
+  const comments = blogComments[i];
+  list.innerHTML = comments.length
+    ? comments.map(c=>`<div class="comment-item"><div class="comment-name">${c.name}</div><div class="comment-text">${c.text}</div></div>`).join('')
+    : `<p class="comment-empty">Sé la primera persona en comentar ✧</p>`;
+}
+
+function openBlogPost(i){
+  const post = blogPosts[i];
+  if(!post) return;
+  blogModalBox.innerHTML = `
+    <span class="blog-page-date">${post.date}</span>
+    <h2>${post.title}</h2>
+    <div class="blog-page-body">${post.full.split('\n\n').map(p=>`<p>${p}</p>`).join('')}</div>
+    <div class="comments-section">
+      <h4>Comentarios</h4>
+      <div class="comment-list" id="commentList"></div>
+      <form class="comment-form" id="commentForm">
+        <input type="text" id="commentName" placeholder="Tu nombre" required>
+        <textarea id="commentText" placeholder="Escribe un comentario..." required></textarea>
+        <button type="submit">Comentar</button>
+      </form>
+    </div>`;
+  renderComments(i);
+  document.getElementById('commentForm').addEventListener('submit', e=>{
+    e.preventDefault();
+    const name = document.getElementById('commentName').value.trim();
+    const text = document.getElementById('commentText').value.trim();
+    if(!name || !text) return;
+    blogComments[i].push({name,text});
+    renderComments(i);
+    e.target.reset();
+  });
+  blogOverlay.classList.add('active');
+  document.body.style.overflow = 'hidden';
+  blogOverlay.scrollTop = 0;
+  window.scrollTo(0,0);
+  document.title = `${post.title} · Mlle.Ri`;
+}
+function closeBlogPost(){
+  blogOverlay.classList.remove('active');
+  document.body.style.overflow = '';
+  document.title = 'Mlle.Ri — Escritora, artista, soñadora';
+}
+function routeToBlogPost(i){
+  history.pushState({blog:i}, '', '#blog/'+i);
+  openBlogPost(i);
+}
+document.getElementById('blogBackBtn').addEventListener('click', ()=> history.back());
 
 // Gallery — collage automático con las imágenes de la galería de cada libro
 const galleryGrid = document.getElementById('galleryGrid');
@@ -988,7 +1070,7 @@ function closeBook(){
   document.title = 'Mlle.Ri — Escritora, artista, soñadora';
 }
 document.getElementById('modalBackBtn').addEventListener('click', ()=> history.back());
-document.addEventListener('keydown', e=>{ if(e.key==='Escape' && (modalOverlay.classList.contains('active') || galleryOverlay.classList.contains('active'))){ history.back(); document.getElementById('lightbox').classList.remove('active'); }});
+document.addEventListener('keydown', e=>{ if(e.key==='Escape' && (modalOverlay.classList.contains('active') || galleryOverlay.classList.contains('active') || blogOverlay.classList.contains('active'))){ history.back(); document.getElementById('lightbox').classList.remove('active'); }});
 
 /* Ruteo: cada libro tiene su propia "página" (#libro/id) con URL y botón atrás reales */
 function routeToBook(id){
@@ -996,16 +1078,21 @@ function routeToBook(id){
   openBook(id);
 }
 function handleRoute(){
-  const match = location.hash.match(/^#libro\/(.+)$/);
-  if(match && books.some(b=>b.id===match[1])){
-    closeGallery();
-    openBook(match[1]);
+  const bookMatch = location.hash.match(/^#libro\/(.+)$/);
+  const blogMatch = location.hash.match(/^#blog\/(\d+)$/);
+  if(bookMatch && books.some(b=>b.id===bookMatch[1])){
+    closeGallery(); closeBlogPost();
+    openBook(bookMatch[1]);
   } else if(location.hash === '#galeria-completa'){
-    closeBook();
+    closeBook(); closeBlogPost();
     openGallery();
+  } else if(blogMatch && blogPosts[+blogMatch[1]]){
+    closeBook(); closeGallery();
+    openBlogPost(+blogMatch[1]);
   } else {
     closeBook();
     closeGallery();
+    closeBlogPost();
   }
 }
 window.addEventListener('popstate', handleRoute);
